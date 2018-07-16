@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>dom操作</title>
+</head>
+<body>
+	<p>Apple</p>
+	<p id="mark">Pear</p>
+	<p>Banana</p>
+	<p class="cls">watermelon</p>
+	<p class="cls">Peach</p>
+	
+	<script src="js/d3.min.js"></script>
+	<script>
+		// 选择元素
+		var body = d3.select('body')
+		var p1 = d3.select('p');
+		var p = body.selectAll('p');
+		var p2 = body.select('#mark')
+		var pp = body.selectAll('.cls')
+
+		p1.style('color', 'blue');
+		p2.style('color', 'red');
+		pp.style('color', 'orange')
+
+
+		// 插入元素.
+		// append()：在选择集末尾插入元素
+		// insert()：在选择集前面插入元素
+		body.insert('p', '#mark').text('通过insert()插入的元素');
+		body.append('p').text('通过append()插入的元素');
+
+		//删除元素  删除一个元素时，对于选择的元素，使用 remove()
+		pp.remove()
+
+	</script>
+</body>
+</html>
