@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+	<meta charset="UTF-8">
+	<title>比例尺</title>
+</head>
+<body>
+	
+	<script src="js/d3.min.js"></script>
+	<script>
+		var dataset = [2.2, 0.8, 5, 4.2, 1.5, 3.5];	//数据（表示矩形的宽度）
+		var svg = d3.select('body').append('svg').attr('width', 300).attr('height', 300);
+
+		var rectHeight = 25;   //每个矩形所占的像素高度(包括空白)
+
+
+		//线性比例尺
+		var linear = d3.scale.linear().domain([0, d3.max(dataset)]).range([0,250]);
+
+		svg.selectAll('rect').data(dataset).enter().append('rect').attr('x', 0).attr('y', function(d, i){
+			return i * rectHeight
+		}).attr('height', rectHeight-2).attr('fill', 'steelblue').attr('width', 0).transition().duration(1000).ease('linear').attr('width', function(d, i){
+			return linear(d)
+		})
+
+		//虚数比例尺
+		var index = [0, 1, 2, 3, 4];
+		var color = ["red", "blue", "green", "yellow", "black"];
+
+		var ordinal = d3.scale.ordinal().domain(index).range(color);
+		ordinal(0);		//red "
+		ordinal(1);		//blue
+		ordinal(2);		//green
+	</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>坐标轴</title>
+	<style>
+		.axis path,
+		.axis line{
+		    fill: none;
+		    stroke: black;
+		    shape-rendering: crispEdges;
+		}
+
+		.axis text {
+		    font-family: sans-serif;
+		    font-size: 11px;
+		    transform: translateX(3px);
+		}
+	</style>
+</head>
+<body>
+	
+	<g>
+		<!-- 第一个刻度 -->
+		<g>
+			<line></line>   <!-- 第一个刻度的直线 -->
+			<text></text>   <!-- 第一个刻度的文字 -->
+		</g>
+		<!-- 第二个刻度 -->
+		<g>
+			<line></line>   <!-- 第二个刻度的直线 -->
+			<text></text>   <!-- 第二个刻度的文字 -->
+		</g> 
+		...
+		<!-- 坐标轴的轴线 -->
+		<path></path>
+	</g>
+	
+	<!-- <g>分组元素，是 SVG 画布中的元素，意思是 group。此元素是将其他元素进行组合的容器，在这里是用于将坐标轴的其他元素分组存放。 -->
+
+
+
+
+	<script src="js/d3.min.js"></script>
+	<script>
+		// 数据
+		var dataset = [ 100 , 50 , 23 , 71 , 132, 68, 113, 25];
+
+		var svg = d3.select('body').append('svg').attr('width', 300).attr('height', 300);
+
+		//定义比例尺
+		var linear = d3.scale.linear().domain([0, d3.max(dataset)]).range([0, 250]);
+
+		var rectHeight = 25;
+		//初始化图表
+		svg.selectAll('rect').data(dataset).enter().append('rect').attr('x', 0).attr('y', function(d, i){
+			return i * rectHeight
+		}).attr('height', rectHeight-2).attr('fill', 'steelblue').attr('width', 0).transition().duration(1000).ease('linear').attr('width', function(d, i){
+			return linear(d)
+		})
+
+		//定义坐标轴 d3.svg.axis()
+		var axis = d3.svg.axis()
+		.scale(linear)		//指定比例尺
+		.orient('bottom')	//指定坐标轴方向
+		.ticks(3)			//指定刻度数
+
+
+		// 在 SVG 中添加坐标轴
+		//在 D3 中，call() 的参数是一个函数。调用之后，将当前的选择集作为参数传递给此函数。比如  svg.append("g").call(axis) 和 axis(svg.append("g"))是相等的
+		svg.append('g')
+		.attr('class', 'axis')
+		.attr('transform', 'translate(0, 200)')
+		.call(axis)
+		
+	</script>
+</body>
+</html>
